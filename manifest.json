@@ -1,0 +1,32 @@
+{
+  "name": "Notifica Concursos",
+  "description": "Extensão do Chrome que notifica concursos públicos brasileiros.",
+  "version": "1.0.0",
+  "author": "Romildo Oliveira Souza Júnior",
+
+  "icons": {
+    "128": "images/icons/inactive-notification.png"
+  },
+
+  "background": {
+    "scripts": [
+      "scripts/vendors/jquery/jquery-3-2-1-min.js",
+      "scripts/popup.js"
+    ],
+    "persistent": false
+  },
+
+  "browser_action": {
+    "default_title": "Notifica Concursos: não há novos concursos.",
+    "default_icon": "images/icons/inactive-notification.png"
+  },
+
+  "permissions": [
+    "alarms",
+    "notifications",
+    "storage",
+    "https://*.pciconcursos.com.br/*"
+  ],
+
+  "manifest_version": 2
+}
