@@ -52,9 +52,29 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     xhr.send();
   }
 
+  function removeOutdated(synced) {
+    for (let i = 0; i < synced.length; ++i) {
+      let flagOutdated = true;
+      for (let j = 0; j < tenders.length; ++j) {
+        if (tenders[j].title == synced[i].title &&
+            tenders[j].vacancies == synced[i].vacancies &&
+            tenders[j].region == synced[i].region) {
+          flagOutdated = false;
+          break;
+        }
+      }
+
+      if (flagOutdated == true) {
+        synced.splice(i, 1);
+      }
+    }
+  }
+
   function storageTenders(tenders) {
     chrome.storage.local.get('syncedTenders', function(synced) {
       synced = synced['syncedTenders'];
+
+      removeOutdated(synced);
 
       tenders.forEach(function(tender) {
         synced.push(tender);
