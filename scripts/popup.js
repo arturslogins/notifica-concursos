@@ -8,11 +8,11 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     'https://www.pciconcursos.com.br/concursos/nordeste/',
   ];
 
-  var tenders = [];
+  let tenders = [];
 
   function parseData(data) {
-    var tendersData = $('#concursos', data).children();
-    var region;
+    let tendersData = $('#concursos', data).children();
+    let region;
 
     tendersData.each(function(index, tenderData) {
       if (tenderData.className == 'ua') {
@@ -21,7 +21,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
           tenderData.firstElementChild != null &&
           tenderData.firstElementChild.className == 'ca') {
         tenderData = tenderData.firstElementChild;
-        var tender = {
+        let tender = {
           'title': tenderData.firstElementChild.text,
           'vacancies': parseInt(tenderData.getElementsByClassName('cd')[0]
                                     .firstChild.textContent.match(/\d+ vaga/)),
@@ -34,7 +34,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
   }
 
   function getData(url) {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4 && xhr.status === 200) {
         parseData(xhr.response);
