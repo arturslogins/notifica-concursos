@@ -54,10 +54,6 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     chrome.storage.local.get('syncedTenders', function(synced) {
       synced = synced['syncedTenders'];
 
-      if (synced == undefined) {
-        synced = [];
-      }
-
       tenders.forEach(function(tender) {
         synced.push(tender);
       });
@@ -73,5 +69,9 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
   }
 });
 
-chrome.alarms.create(
-    'check-tenders', {'when': Date.now(), 'periodInMinutes': 60});
+chrome.runtime.onInstalled.addListener(function(details) {
+  chrome.storage.local.set({'syncedTenders': []}, function() {
+    chrome.alarms.create(
+        'check-tenders', {'when': Date.now(), 'periodInMinutes': 60});
+  });
+});
