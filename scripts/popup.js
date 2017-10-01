@@ -52,7 +52,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 
   function storageTenders(tenders) {
     chrome.storage.local.get('syncedTenders', function(synced) {
-      let synced = synced['syncedTenders'];
+      synced = synced['syncedTenders'];
 
       if (synced == undefined) {
         synced = [];
