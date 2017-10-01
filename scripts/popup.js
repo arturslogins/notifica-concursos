@@ -53,7 +53,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
   }
 
   function removeOutdated(synced) {
-    for (let i = 0; i < synced.length; ++i) {
+    for (let i = synced.length - 1; i >= 0; --i) {
       let flagOutdated = true;
       for (let j = 0; j < tenders.length; ++j) {
         if (tenders[j].title == synced[i].title &&
