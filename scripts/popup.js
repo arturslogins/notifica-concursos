@@ -70,11 +70,30 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     }
   }
 
+  function removeDuplicates(synced) {
+    for (let i = tenders.length - 1; i >= 0; --i) {
+      let flagDuplicate = false;
+      for (let j = 0; j < synced.length; ++j) {
+        if (tenders[i].title == synced[j].title &&
+            tenders[i].vacancies == synced[j].vacancies &&
+            tenders[i].region == synced[j].region) {
+          flagDuplicate = true;
+          break;
+        }
+      }
+
+      if (flagDuplicate == true) {
+        tenders.splice(i, 1);
+      }
+    }
+  }
+
   function storageTenders(tenders) {
     chrome.storage.local.get('syncedTenders', function(synced) {
       synced = synced['syncedTenders'];
 
       removeOutdated(synced);
+      removeDuplicates(synced);
 
       tenders.forEach(function(tender) {
         synced.push(tender);
