@@ -9,6 +9,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
   ];
 
   let tenders = [];
+  let xhrCount = 0;
 
   function parseData(data) {
     let tendersData = $('#concursos', data).children();
@@ -38,10 +39,31 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4 && xhr.status === 200) {
         parseData(xhr.response);
+
+        ++xhrCount;
+        if (xhrCount == URLS.length) {
+          storageTenders(tenders);
+        }
       }
     };
     xhr.open('GET', url, true);
     xhr.send();
+  }
+
+  function storageTenders(tenders) {
+    chrome.storage.local.get('syncedTenders', function(synced) {
+      let synced = synced['syncedTenders'];
+
+      if (synced == undefined) {
+        synced = [];
+      }
+
+      tenders.forEach(function(tender) {
+        synced.push(tender);
+      });
+
+      chrome.storage.local.set({'syncedTenders': synced}, function() {});
+    });
   }
 
   if (alarm.name == 'check-tenders') {
