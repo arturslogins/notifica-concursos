@@ -24,8 +24,10 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         tenderData = tenderData.firstElementChild;
         let tender = {
           'title': tenderData.firstElementChild.text,
-          'vacancies': parseInt(tenderData.getElementsByClassName('cd')[0]
-                                    .firstChild.textContent.match(/\d+ vaga/)),
+          'vacancies':
+              parseInt(tenderData.getElementsByClassName('cd')[0]
+                           .firstChild.textContent.match(/\d+ vaga/)) ||
+              -1,
           'region': region,
           'url': tenderData.firstElementChild.href
         };
