@@ -102,6 +102,15 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         function callback() {});
   }
 
+  function updateBrowserAction() {
+    chrome.browserAction.setIcon(
+        {'path': 'images/icons/active-notification.png'},
+        function callback() {});
+
+    chrome.browserAction.setTitle(
+        {'title': 'Há ' + tenders.length + ' novos concursos!'});
+  }
+
   function storageTenders(tenders) {
     chrome.storage.local.get('syncedTenders', function(synced) {
       synced = synced['syncedTenders'];
@@ -114,6 +123,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         tenders.forEach(function(tender) {
           synced.push(tender);
         });
+        updateBrowserAction();
       }
 
       chrome.storage.local.set({'syncedTenders': synced}, function() {});
