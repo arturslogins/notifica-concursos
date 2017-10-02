@@ -88,6 +88,20 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     }
   }
 
+  function showNotification() {
+    chrome.notifications.create(
+        {
+          'type': 'list',
+          'iconUrl': 'images/icons/active-notification.png',
+          'title': tenders.length + ' novos concursos foram encontrados!',
+          'message': tenders.length + ' novos concursos foram encontrados!',
+          'items': tenders.map(function callback(tender, index, tenders) {
+            return {'title': tender['title'], 'message': ''};
+          })
+        },
+        function callback() {});
+  }
+
   function storageTenders(tenders) {
     chrome.storage.local.get('syncedTenders', function(synced) {
       synced = synced['syncedTenders'];
@@ -95,9 +109,12 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
       removeOutdated(synced);
       removeDuplicates(synced);
 
-      tenders.forEach(function(tender) {
-        synced.push(tender);
-      });
+      if (tenders.length > 0) {
+        showNotification();
+        tenders.forEach(function(tender) {
+          synced.push(tender);
+        });
+      }
 
       chrome.storage.local.set({'syncedTenders': synced}, function() {});
     });
