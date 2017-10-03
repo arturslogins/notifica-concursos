@@ -1,4 +1,9 @@
 chrome.storage.local.get('syncedTenders', function(synced) {
+  $('body').on('click', 'a', function() {
+    chrome.tabs.create({'url': $(this).attr('href'), 'active': false});
+    return false;
+  });
+
   synced = synced['syncedTenders'];
 
   synced.forEach(function(tender) {
