@@ -29,7 +29,8 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
                            .firstChild.textContent.match(/\d+ vaga/)) ||
               -1,
           'region': region,
-          'url': tenderData.firstElementChild.href
+          'url': tenderData.firstElementChild.href,
+          'additionDate': Date.now()
         };
         tenders.push(tender);
       }

@@ -6,6 +6,8 @@ chrome.storage.local.get('syncedTenders', function(synced) {
         .append(
             '<tr><td><a href="' + tender['url'] + '">' + tender['title'] +
             '</a></td><td>' + tender['vacancies'] + '</td><td>' +
-            tender['region'] + '</td></tr>');
+            tender['region'] + '</td><td>' +
+            Math.floor((Date.now() - tender['additionDate']) / 86400000) +
+            '</td></tr>');
   });
 });

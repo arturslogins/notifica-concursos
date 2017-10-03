@@ -13,8 +13,8 @@
 <body>
   <table class="table datatable"
          data-id-field="titulo"
-         data-sort-name="vacancies"
-         data-sort-order="desc"
+         data-sort-name="timeElapsed"
+         data-sort-order="asc"
          data-filter-control="true"
          data-search="true"
          data-show-pagination-switch="false"
@@ -35,6 +35,11 @@
                   data-sortable="true"
                   data-filter-control="select">
                   Regiões
+              </th>
+              <th data-align="center"
+                  data-field="timeElapsed"
+                  data-sortable="true">
+                  Adicionado há (dias)
               </th>
           </tr>
       </thead>
