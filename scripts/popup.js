@@ -7,28 +7,29 @@ chrome.storage.local.get('syncedTenders', function(synced) {
   synced = synced['syncedTenders'];
 
   let tender;
+  let tr;
 
   for (let i = synced.length - 1; i >= 0; --i) {
     tender = synced[i];
+    tr = document.createElement('tr');
 
     if (tender['visualzed']) {
-      $('table tbody')
-          .append(
-              '<tr><td><a href="' + tender['url'] + '">' + tender['title'] +
-              '</a></td><td>' + tender['vacancies'] + '</td><td>' +
-              tender['region'] + '</td><td>' +
-              Math.floor((Date.now() - tender['additionDate']) / 86400000) +
-              '</td></tr>');
+      tr.innerHTML = '<td><a href="' + tender['url'] + '">' + tender['title'] +
+          '</a></td><td>' + tender['vacancies'] + '</td><td>' +
+          tender['region'] + '</td><td>' +
+          Math.floor((Date.now() - tender['additionDate']) / 86400000) +
+          '</td>';
     } else {
-      $('table tbody')
-          .append(
-              '<tr class="success"><td><a href="' + tender['url'] + '">' +
-              tender['title'] + '</a></td><td>' + tender['vacancies'] +
-              '</td><td>' + tender['region'] + '</td><td>' +
-              Math.floor((Date.now() - tender['additionDate']) / 86400000) +
-              '</td></tr>');
+      tr.innerHTML = '<td><a href="' + tender['url'] + '">' + tender['title'] +
+          '</a></td><td>' + tender['vacancies'] + '</td><td>' +
+          tender['region'] + '</td><td>' +
+          Math.floor((Date.now() - tender['additionDate']) / 86400000) +
+          '</td>';
+      tr.className = 'success';
       tender['visualzed'] = true;
     }
+
+    document.getElementsByTagName('tbody')[0].appendChild(tr);
   }
 
   chrome.storage.local.set({'syncedTenders': synced}, function() {
