@@ -108,8 +108,13 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         {'path': 'images/icons/active-notification.png'},
         function callback() {});
 
-    chrome.browserAction.setTitle(
-        {'title': 'Há ' + tenders.length + ' novos concursos!'});
+    chrome.storage.local.get('notVisualizeds', function(syncedValue) {
+      syncedValue = syncedValue['notVisualizeds'];
+
+      chrome.browserAction.setTitle({
+        'title': 'Notifica Concursos: Há ' + (syncedValue + tenders.length) + ' novos concursos!'
+      });
+    });
   }
 
   function storageTenders(tenders) {
@@ -121,13 +126,24 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 
       if (tenders.length > 0) {
         showNotification();
+
         tenders.forEach(function(tender) {
+          tender['visualized'] = false;
           synced.push(tender);
         });
-        updateBrowserAction();
-      }
 
-      chrome.storage.local.set({'syncedTenders': synced}, function() {});
+        updateBrowserAction();
+
+        chrome.storage.local.set({'syncedTenders': synced}, function() {
+          chrome.storage.local.get('notVisualizeds', function(syncedValue) {
+            syncedValue = syncedValue['notVisualizeds'];
+
+            chrome.storage.local.set(
+                {'notVisualizeds': syncedValue + tenders.length},
+                function() {});
+          });
+        });
+      }
     });
   }
 
@@ -140,7 +156,9 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 
 chrome.runtime.onInstalled.addListener(function(details) {
   chrome.storage.local.set({'syncedTenders': []}, function() {
-    chrome.alarms.create(
-        'check-tenders', {'when': Date.now(), 'periodInMinutes': 60});
+    chrome.storage.local.set({'notVisualizeds': 0}, function() {
+      chrome.alarms.create(
+          'check-tenders', {'when': Date.now(), 'periodInMinutes': 60});
+    });
   });
 });
