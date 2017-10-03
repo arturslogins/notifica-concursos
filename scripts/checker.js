@@ -19,6 +19,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
       if (tenderData.className == 'ua') {
         region = tenderData.id;
       } else if (
+          tenderData.className != 'ea' &&
           tenderData.firstElementChild != null &&
           tenderData.firstElementChild.className == 'ca') {
         tenderData = tenderData.firstElementChild;
@@ -112,7 +113,8 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
       syncedValue = syncedValue['notVisualizeds'];
 
       chrome.browserAction.setTitle({
-        'title': 'Notifica Concursos: Há ' + (syncedValue + tenders.length) + ' novos concursos!'
+        'title': 'Notifica Concursos: Há ' + (syncedValue + tenders.length) +
+            ' novos concursos!'
       });
     });
   }
