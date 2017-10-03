@@ -11,7 +11,7 @@
   "background": {
     "scripts": [
       "scripts/vendors/jquery/jquery-3-2-1-min.js",
-      "scripts/popup.js"
+      "scripts/checker.js"
     ],
     "persistent": false
   },
