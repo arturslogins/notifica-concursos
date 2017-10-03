@@ -46,7 +46,7 @@ if(this.options.sidePagination==='server'){return;}
 this.initSort();};BootstrapTable.prototype.initSort=function(){var that=this,name=this.options.sortName,order=this.options.sortOrder==='desc'?-1:1,index=$.inArray(this.options.sortName,this.header.fields),timeoutId=0;if(this.options.customSort!==$.noop){this.options.customSort.apply(this,[this.options.sortName,this.options.sortOrder]);return;}
 if(index!==-1){if(this.options.sortStable){$.each(this.data,function(i,row){if(!row.hasOwnProperty('_position'))row._position=i;});}
 this.data.sort(function(a,b){if(that.header.sortNames[index]){name=that.header.sortNames[index];}
-var aa=getItemField(a,name,that.options.escape),bb=getItemField(b,name,that.options.escape),value=calculateObjectValue(that.header,that.header.sorters[index],[aa,bb]);if(value!==undefined){return order*value;}
+var aa=getItemField(a,name,that.options.escape),bb=getItemField(b,name,that.options.escape);"string"==typeof aa&&"string"==typeof bb&&aa.startsWith('<a href="')&&bb.startsWith('<a href="')&&(aa=aa.match(/>(.*?)<\/a>/)[1],bb=bb.match(/>(.*?)<\/a>/)[1]);var value=calculateObjectValue(that.header,that.header.sorters[index],[aa,bb]);if(value!==undefined){return order*value;}
 if(aa===undefined||aa===null){aa='';}
 if(bb===undefined||bb===null){bb='';}
 if(that.options.sortStable&&aa===bb){aa=a._position;bb=b._position;}
