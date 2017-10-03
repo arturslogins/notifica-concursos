@@ -6,7 +6,11 @@ chrome.storage.local.get('syncedTenders', function(synced) {
 
   synced = synced['syncedTenders'];
 
-  synced.forEach(function(tender) {
+  let tender;
+
+  for (let i = synced.length - 1; i >= 0; --i) {
+    tender = synced[i];
+
     if (tender['visualzed']) {
       $('table tbody')
           .append(
@@ -25,7 +29,7 @@ chrome.storage.local.get('syncedTenders', function(synced) {
               '</td></tr>');
       tender['visualzed'] = true;
     }
-  });
+  }
 
   chrome.storage.local.set({'syncedTenders': synced}, function() {
     chrome.storage.local.set({'notVisualizeds': 0}, function() {});
