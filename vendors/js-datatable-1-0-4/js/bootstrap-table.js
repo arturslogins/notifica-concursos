@@ -947,8 +947,15 @@
                     name = that.header.sortNames[index];
                 }
                 var aa = getItemField(a, name, that.options.escape),
-                    bb = getItemField(b, name, that.options.escape),
-                    value = calculateObjectValue(that.header, that.header.sorters[index], [aa, bb]);
+                    bb = getItemField(b, name, that.options.escape);
+
+                if (typeof(aa) == 'string' && typeof(bb) == 'string' &&
+                    aa.startsWith('<a href="') && bb.startsWith('<a href="')) {
+                  aa = aa.match(/>(.*?)<\/a>/)[1];
+                  bb = bb.match(/>(.*?)<\/a>/)[1];
+                }
+
+                var value = calculateObjectValue(that.header, that.header.sorters[index], [aa, bb]);
 
                 if (value !== undefined) {
                     return order * value;
