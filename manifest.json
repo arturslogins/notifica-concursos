@@ -10,8 +10,8 @@
 
   "background": {
     "scripts": [
-      "scripts/vendors/jquery/jquery-3-2-1-min.js",
-      "scripts/checker.js"
+      "vendors/jquery-3-2-1/js/jquery-3-2-1.js",
+      "js/checker.js"
     ],
     "persistent": false
   },
