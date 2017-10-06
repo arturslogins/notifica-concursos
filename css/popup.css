@@ -1,3 +1,23 @@
-body {
-  width: 800px;
+#tendersTable {
+  width: 785px;
+  min-height: 84vh;
+}
+
+#tendersTable > tbody > tr {
+  font-size: 15px;
+}
+
+#tendersTable_wrapper div:last-child div {
+  display: inline;
+}
+
+#selectRegion {
+  display: inline-block;
+  margin-left: 200px
+}
+
+#selectRegionSelect {
+  width: 75px;
+  margin-left: 10px;
+  margin-bottom: 0px;
 }

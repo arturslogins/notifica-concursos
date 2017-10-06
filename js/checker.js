@@ -24,7 +24,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
           tenderData.firstElementChild.className == 'ca') {
         tenderData = tenderData.firstElementChild;
         let tender = {
-          'title': tenderData.firstElementChild.text,
+          'institution': tenderData.firstElementChild.text,
           'vacancies':
               parseInt(tenderData.getElementsByClassName('cd')[0]
                            .firstChild.textContent.match(/\d+ vaga/)) ||
@@ -58,7 +58,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     for (let i = synced.length - 1; i >= 0; --i) {
       let flagOutdated = true;
       for (let j = 0; j < tenders.length; ++j) {
-        if (tenders[j].title == synced[i].title &&
+        if (tenders[j].institution == synced[i].institution &&
             tenders[j].vacancies == synced[i].vacancies &&
             tenders[j].region == synced[i].region) {
           flagOutdated = false;
@@ -76,7 +76,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     for (let i = tenders.length - 1; i >= 0; --i) {
       let flagDuplicate = false;
       for (let j = 0; j < synced.length; ++j) {
-        if (tenders[i].title == synced[j].title &&
+        if (tenders[i].institution == synced[j].institution &&
             tenders[i].vacancies == synced[j].vacancies &&
             tenders[i].region == synced[j].region) {
           flagDuplicate = true;
@@ -98,7 +98,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
           'title': tenders.length + ' novos concursos foram encontrados!',
           'message': tenders.length + ' novos concursos foram encontrados!',
           'items': tenders.map(function callback(tender, index, tenders) {
-            return {'title': tender['title'], 'message': ''};
+            return {'title': tender['institution'], 'message': ''};
           })
         },
         function callback() {});
