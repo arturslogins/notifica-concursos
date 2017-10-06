@@ -6,7 +6,7 @@ chrome.storage.local.get('syncedTenders', function(synced) {
 
   synced = synced['syncedTenders'];
 
-  $('#tendersTable').DataTable({
+  let table = $('#tendersTable').DataTable({
     data: synced,
     'order': [3, 'desc'],
     columns: [
@@ -48,6 +48,21 @@ chrome.storage.local.get('syncedTenders', function(synced) {
         });
       });
     }
+  });
+
+  $(document).ready(function() {
+    $('<label id="hidePrefecturesLabel">Ocultar prefeituras?</label><div class="switch" id="hidePrefectures"><input class="switch-input" id="hidePrefecturesInput" type="checkbox"><label class="switch-paddle" for="hidePrefecturesInput"></label></div>')
+        .appendTo($('#tendersTable_wrapper > div:nth-child(1)'));
+    $('#hidePrefecturesInput').on('change', function() {
+      if (this.checked == true) {
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+          return data[0].startsWith('Prefeitura') == false;
+        });
+      } else {
+        $.fn.dataTable.ext.search.pop();
+      }
+      table.draw();
+    });
   });
 
   chrome.storage.local.set({'syncedTenders': synced}, function() {

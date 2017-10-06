@@ -11,13 +11,30 @@
   display: inline;
 }
 
+#tendersTable_length > label > select {
+  margin-left: 10px;
+}
+
 #selectRegion {
   display: inline-block;
-  margin-left: 140px;
+  margin-left: 15px;
 }
 
 #selectRegionSelect {
   width: 75px;
   margin-left: 10px;
   margin-bottom: 0px;
+}
+
+#hidePrefectures {
+  margin-bottom: 0px;
+  display: inline-block;
+  position: absolute;
+  margin-top: 4px;
+  margin-left: 10px;
+}
+
+#hidePrefecturesLabel {
+  margin-left: 15px;
+  display: inline-block;
 }
