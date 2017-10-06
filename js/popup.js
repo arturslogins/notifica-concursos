@@ -29,6 +29,12 @@ chrome.storage.local.get('syncedTenders', function(synced) {
     ],
     'language':
         {'url': 'vendors/DataTables-1.10.16/locale/Portuguese-Brasil.json'},
+    'createdRow': function(row, data, dataIndex) {
+      if (data['visualized'] == false) {
+        $(row).addClass('highlightRow');
+        data['visualized'] = true;
+      }
+    },
     'initComplete': function() {
       this.api().columns([2]).every(function() {
         let column = this;
@@ -64,6 +70,7 @@ chrome.storage.local.get('syncedTenders', function(synced) {
       table.draw();
     });
   });
+
 
   chrome.storage.local.set({'syncedTenders': synced}, function() {
     chrome.storage.local.set({'notVisualizeds': 0}, function() {});
