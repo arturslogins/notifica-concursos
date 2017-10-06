@@ -27,6 +27,8 @@ chrome.storage.local.get('syncedTenders', function(synced) {
         }
       }
     ],
+    'language':
+        {'url': 'vendors/DataTables-1.10.16/locale/Portuguese-Brasil.json'},
     'initComplete': function() {
       this.api().columns([2]).every(function() {
         let column = this;
