@@ -71,9 +71,8 @@ chrome.storage.local.get('syncedTenders', function(synced) {
     });
   });
 
-
   chrome.storage.local.set({'syncedTenders': synced}, function() {
-    chrome.storage.local.set({'notVisualizeds': 0}, function() {});
+    chrome.storage.local.set({'nonVisualizeds': 0}, function() {});
     chrome.browserAction.setIcon(
         {'path': 'images/icons/inactive-notification.png'},
         function callback() {});

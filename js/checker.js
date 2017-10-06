@@ -109,8 +109,8 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         {'path': 'images/icons/active-notification.png'},
         function callback() {});
 
-    chrome.storage.local.get('notVisualizeds', function(syncedValue) {
-      syncedValue = syncedValue['notVisualizeds'];
+    chrome.storage.local.get('nonVisualizeds', function(syncedValue) {
+      syncedValue = syncedValue['nonVisualizeds'];
 
       chrome.browserAction.setTitle({
         'title': 'Notifica Concursos: Há ' + (syncedValue + tenders.length) +
@@ -137,11 +137,11 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         updateBrowserAction();
 
         chrome.storage.local.set({'syncedTenders': synced}, function() {
-          chrome.storage.local.get('notVisualizeds', function(syncedValue) {
-            syncedValue = syncedValue['notVisualizeds'];
+          chrome.storage.local.get('nonVisualizeds', function(syncedValue) {
+            syncedValue = syncedValue['nonVisualizeds'];
 
             chrome.storage.local.set(
-                {'notVisualizeds': syncedValue + tenders.length},
+                {'nonVisualizeds': syncedValue + tenders.length},
                 function() {});
           });
         });
@@ -157,10 +157,18 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 });
 
 chrome.runtime.onInstalled.addListener(function(details) {
-  chrome.storage.local.set({'syncedTenders': []}, function() {
-    chrome.storage.local.set({'notVisualizeds': 0}, function() {
+  chrome.storage.local.get('syncedTenders', function(synced) {
+    synced = synced['syncedTenders'];
+    if (synced == undefined) {
+      chrome.storage.local.set({'syncedTenders': []}, function() {
+        chrome.storage.local.set({'nonVisualizeds': 0}, function() {
+          chrome.alarms.create(
+              'check-tenders', {'when': Date.now(), 'periodInMinutes': 60});
+        });
+      });
+    } else {
       chrome.alarms.create(
           'check-tenders', {'when': Date.now(), 'periodInMinutes': 60});
-    });
+    }
   });
 });
