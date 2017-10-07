@@ -22,8 +22,12 @@ chrome.storage.local.get('syncedTenders', function(synced) {
       {'data': 'region', 'title': 'Região'}, {
         'data': 'additionDate',
         'title': 'Adicionado em',
-        render: function(data) {
-          return moment(data, 'x').format('DD/MM/YYYY');
+        render: function(data, type, row) {
+          if (type == 'display' || type == 'filter') {
+            return moment(data, 'x').format('DD/MM/YYYY');
+          } else {
+            return data;
+          }
         }
       }
     ],

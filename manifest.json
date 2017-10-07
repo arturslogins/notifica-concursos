@@ -1,7 +1,7 @@
 {
   "name": "Notifica Concursos",
   "description": "Extensão do Chrome que notifica concursos públicos brasileiros.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Romildo Oliveira Souza Júnior",
 
   "icons": {
