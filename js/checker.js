@@ -9,10 +9,10 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
   ];
 
   let tenders = [];
-  let xhrCount = 0;
+  let parsedCount = 0;
 
-  function parseData(data) {
-    let tendersData = $('#concursos', data).children();
+  function parseResponse(xhrResponse) {
+    let tendersData = $('#concursos', xhrResponse).children();
     let region;
 
     tendersData.each(function(index, tenderData) {
@@ -36,49 +36,49 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         tenders.push(tender);
       }
     });
+
+    ++parsedCount;
+    if (parsedCount == URLS.length) {
+      storageTenders(tenders);
+    }
   }
 
-  function getData(url) {
+  function getXhrResponse(url, callback) {
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4 && xhr.status === 200) {
-        parseData(xhr.response);
-
-        ++xhrCount;
-        if (xhrCount == URLS.length) {
-          storageTenders(tenders);
-        }
+        callback(xhr.response);
       }
     };
     xhr.open('GET', url, true);
     xhr.send();
   }
 
-  function removeOutdated(synced) {
-    for (let i = synced.length - 1; i >= 0; --i) {
+  function removeOutdated(syncedTenders) {
+    for (let i = syncedTenders.length - 1; i >= 0; --i) {
       let flagOutdated = true;
       for (let j = 0; j < tenders.length; ++j) {
-        if (tenders[j].institution == synced[i].institution &&
-            tenders[j].vacancies == synced[i].vacancies &&
-            tenders[j].region == synced[i].region) {
+        if (tenders[j].institution == syncedTenders[i].institution &&
+            tenders[j].vacancies == syncedTenders[i].vacancies &&
+            tenders[j].region == syncedTenders[i].region) {
           flagOutdated = false;
           break;
         }
       }
 
       if (flagOutdated == true) {
-        synced.splice(i, 1);
+        syncedTenders.splice(i, 1);
       }
     }
   }
 
-  function removeDuplicates(synced) {
+  function removeDuplicates(syncedTenders) {
     for (let i = tenders.length - 1; i >= 0; --i) {
       let flagDuplicate = false;
-      for (let j = 0; j < synced.length; ++j) {
-        if (tenders[i].institution == synced[j].institution &&
-            tenders[i].vacancies == synced[j].vacancies &&
-            tenders[i].region == synced[j].region) {
+      for (let j = 0; j < syncedTenders.length; ++j) {
+        if (tenders[i].institution == syncedTenders[j].institution &&
+            tenders[i].vacancies == syncedTenders[j].vacancies &&
+            tenders[i].region == syncedTenders[j].region) {
           flagDuplicate = true;
           break;
         }
@@ -109,39 +109,39 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         {'path': 'images/icons/active-notification.png'},
         function callback() {});
 
-    chrome.storage.local.get('nonVisualizeds', function(syncedValue) {
-      syncedValue = syncedValue['nonVisualizeds'];
+    chrome.storage.local.get('nonVisualizeds', function(nonVisualizeds) {
+      nonVisualizeds = nonVisualizeds['nonVisualizeds'];
 
       chrome.browserAction.setTitle({
-        'title': 'Notifica Concursos: Há ' + (syncedValue + tenders.length) +
+        'title': 'Notifica Concursos: Há ' + (nonVisualizeds + tenders.length) +
             ' novos concursos!'
       });
     });
   }
 
   function storageTenders(tenders) {
-    chrome.storage.local.get('syncedTenders', function(synced) {
-      synced = synced['syncedTenders'];
+    chrome.storage.local.get('syncedTenders', function(syncedTenders) {
+      syncedTenders = syncedTenders['syncedTenders'];
 
-      removeOutdated(synced);
-      removeDuplicates(synced);
+      removeOutdated(syncedTenders);
+      removeDuplicates(syncedTenders);
 
       if (tenders.length > 0) {
         showNotification();
 
         tenders.forEach(function(tender) {
           tender['visualized'] = false;
-          synced.push(tender);
+          syncedTenders.push(tender);
         });
 
         updateBrowserAction();
 
-        chrome.storage.local.set({'syncedTenders': synced}, function() {
-          chrome.storage.local.get('nonVisualizeds', function(syncedValue) {
-            syncedValue = syncedValue['nonVisualizeds'];
+        chrome.storage.local.set({'syncedTenders': syncedTenders}, function() {
+          chrome.storage.local.get('nonVisualizeds', function(nonVisualizeds) {
+            nonVisualizeds = nonVisualizeds['nonVisualizeds'];
 
             chrome.storage.local.set(
-                {'nonVisualizeds': syncedValue + tenders.length},
+                {'nonVisualizeds': nonVisualizeds + tenders.length},
                 function() {});
           });
         });
@@ -151,15 +151,15 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 
   if (alarm.name == 'check-tenders') {
     URLS.forEach(function(url) {
-      getData(url);
+      getXhrResponse(url, parseResponse);
     });
   }
 });
 
 chrome.runtime.onInstalled.addListener(function(details) {
-  chrome.storage.local.get('syncedTenders', function(synced) {
-    synced = synced['syncedTenders'];
-    if (synced == undefined) {
+  chrome.storage.local.get('syncedTenders', function(syncedTenders) {
+    syncedTenders = syncedTenders['syncedTenders'];
+    if (syncedTenders == undefined) {
       chrome.storage.local.set({'syncedTenders': []}, function() {
         chrome.storage.local.set({'nonVisualizeds': 0}, function() {
           chrome.alarms.create(
