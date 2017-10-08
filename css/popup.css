@@ -1,23 +1,18 @@
 #tendersTable {
   width: 785px;
-  min-height: 84vh;
+  min-height: 85vh;
 }
 
 #tendersTable > tbody > tr {
   font-size: 15px;
 }
 
-#tendersTable_wrapper div:last-child div {
-  display: inline;
+#tendersTable_length {
+  margin-left: 100px;
 }
 
 #tendersTable_length > label > select {
   margin-left: 10px;
-}
-
-#selectRegion {
-  display: inline-block;
-  margin-left: 15px;
 }
 
 #selectRegionSelect {
@@ -30,13 +25,19 @@
   margin-bottom: 0px;
   display: inline-block;
   position: absolute;
-  margin-top: 4px;
+  margin-top: 5px;
   margin-left: 10px;
 }
 
 #hidePrefecturesLabel {
   margin-left: 15px;
+  margin-top: 9px;
   display: inline-block;
+}
+
+.pagination {
+  margin-top: 5px;
+  margin-bottom: 0px;
 }
 
 .highlightRow {

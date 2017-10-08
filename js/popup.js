@@ -39,12 +39,16 @@ chrome.storage.local.get('syncedTenders', function(synced) {
         data['visualized'] = true;
       }
     },
+    'dom': '<"grid-x"<"auto cell"><"auto cell"><"auto cell"f>r>' +
+        't' +
+        '<"grid-x"<"auto cell"l><"auto cell"p>>',
     'initComplete': function() {
       this.api().columns([2]).every(function() {
         let column = this;
         let div =
             $('<div id="selectRegion"><label id="selectRegionLabel">Região</label></div>')
-                .appendTo($('#tendersTable_wrapper > div:nth-child(1)'));
+                .appendTo($(
+                    '#tendersTable_wrapper > div:nth-child(1) > div:nth-child(2)'));
         let select =
             $('<select id="selectRegionSelect"><option value=""></option></select>')
                 .appendTo($('#selectRegionLabel'))
@@ -62,7 +66,8 @@ chrome.storage.local.get('syncedTenders', function(synced) {
 
   $(document).ready(function() {
     $('<label id="hidePrefecturesLabel">Ocultar prefeituras?</label><div class="switch" id="hidePrefectures"><input class="switch-input" id="hidePrefecturesInput" type="checkbox"><label class="switch-paddle" for="hidePrefecturesInput"></label></div>')
-        .appendTo($('#tendersTable_wrapper > div:nth-child(1)'));
+        .appendTo(
+            $('#tendersTable_wrapper > div:nth-child(1) > div:nth-child(1)'));
     $('#hidePrefecturesInput').on('change', function() {
       if (this.checked == true) {
         $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
