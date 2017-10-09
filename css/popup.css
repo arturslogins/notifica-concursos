@@ -51,3 +51,16 @@
 .highlightRow {
   background-color: #ffff99 !important;
 }
+
+#tendersTable_length {
+  margin-left: 20px;
+}
+
+#contact {
+  font-size: 18px;
+  margin-top: 6px;
+}
+
+#contact > a {
+  margin-left: 24px;
+}

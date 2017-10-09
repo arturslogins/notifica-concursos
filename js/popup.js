@@ -45,11 +45,12 @@ chrome.storage.local.get('syncedTenders', function(synced) {
     'dom':
         '<"grid-x"<"small-3 cell"><"#selectRegion.small-1 cell"><"#selectCareer.small-4 cell"><"auto cell"f>r>' +
         't' +
-        '<"grid-x"<"auto cell"><"small-4 cell"l><"small-6 cell"p>>',
+        '<"grid-x"<"auto cell"l><"#contact.auto cell"><"small-6 cell"p>>',
     'initComplete': function() {
       insertRegionsSelect(this);
       insertHidePrefectures(this);
       insertCareerSelect(this);
+      insertContactLink();
     }
   });
 
@@ -195,6 +196,11 @@ chrome.storage.local.get('syncedTenders', function(synced) {
     $.fn.dataTable.ext.search.push(careerFilter);
     table.draw();
     $('#selectCareerSelect').removeAttr('disabled');
+  }
+
+  function insertContactLink() {
+    $('<a href="maito:contact@mildo.me">contact@mildo.me</a>')
+        .appendTo($('#contact'));
   }
 
   chrome.storage.local.set({'syncedTenders': synced}, function() {
