@@ -28,7 +28,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
           'vacancies':
               parseInt(tenderData.getElementsByClassName('cd')[0]
                            .firstChild.textContent.match(/\d+ vaga/)) ||
-              -1,
+              '-',
           'region': region,
           'url': tenderData.firstElementChild.href,
           'additionDate': Date.now()
