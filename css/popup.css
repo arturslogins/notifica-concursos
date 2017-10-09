@@ -7,17 +7,25 @@
   font-size: 15px;
 }
 
-#tendersTable_length {
-  margin-left: 100px;
-}
-
 #tendersTable_length > label > select {
   margin-left: 10px;
 }
 
+#selectRegion {
+  margin-left: 30px;
+}
+
+#selectCareer {
+  margin-left: 40px;
+}
+
 #selectRegionSelect {
-  width: 75px;
-  margin-left: 10px;
+  width: 85px;
+  margin-bottom: 0px;
+}
+
+#selectCareerSelect {
+  width: 220px;
   margin-bottom: 0px;
 }
 
@@ -30,7 +38,7 @@
 }
 
 #hidePrefecturesLabel {
-  margin-left: 15px;
+  margin-left: 10px;
   margin-top: 9px;
   display: inline-block;
 }
@@ -41,5 +49,5 @@
 }
 
 .highlightRow {
-  background-color: #ffff99!important;
+  background-color: #ffff99 !important;
 }
