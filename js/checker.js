@@ -58,9 +58,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     for (let i = syncedTenders.length - 1; i >= 0; --i) {
       let flagOutdated = true;
       for (let j = 0; j < tenders.length; ++j) {
-        if (tenders[j].institution == syncedTenders[i].institution &&
-            tenders[j].vacancies == syncedTenders[i].vacancies &&
-            tenders[j].region == syncedTenders[i].region) {
+        if (tenders[j].url == syncedTenders[i].url) {
           flagOutdated = false;
           break;
         }
@@ -76,9 +74,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
     for (let i = tenders.length - 1; i >= 0; --i) {
       let flagDuplicate = false;
       for (let j = 0; j < syncedTenders.length; ++j) {
-        if (tenders[i].institution == syncedTenders[j].institution &&
-            tenders[i].vacancies == syncedTenders[j].vacancies &&
-            tenders[i].region == syncedTenders[j].region) {
+        if (tenders[i].url == syncedTenders[j].url) {
           flagDuplicate = true;
           break;
         }
@@ -95,8 +91,8 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
         {
           'type': 'list',
           'iconUrl': 'images/icons/active-notification.png',
-          'title': tenders.length + ' novos concursos foram encontrados!',
-          'message': tenders.length + ' novos concursos foram encontrados!',
+          'title': tenders.length + ' concursos foram adicionados/alterados!',
+          'message': tenders.length + ' concursos foram adicionados/alterados!',
           'items': tenders.map(function callback(tender, index, tenders) {
             return {'title': tender['institution'], 'message': ''};
           })
@@ -114,7 +110,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 
       chrome.browserAction.setTitle({
         'title': 'Notifica Concursos: Há ' + (nonVisualizeds + tenders.length) +
-            ' novos concursos!'
+            ' concursos adicionados/alterados!'
       });
     });
   }
