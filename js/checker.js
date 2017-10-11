@@ -13,6 +13,7 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
 
   function parseResponse(xhrResponse) {
     let tendersData = $('#concursos', xhrResponse).children();
+    let vacancies;
     let region;
 
     tendersData.each(function(index, tenderData) {
@@ -23,11 +24,12 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
           tenderData.firstElementChild != null &&
           tenderData.firstElementChild.className == 'ca') {
         tenderData = tenderData.firstElementChild;
+        vacancies = tenderData.getElementsByClassName('cd')[0]
+                        .firstChild.textContent.match(/^\d+(\.\d{1,3})* vaga/);
         let tender = {
           'institution': tenderData.firstElementChild.text,
-          'vacancies':
-              parseInt(tenderData.getElementsByClassName('cd')[0]
-                           .firstChild.textContent.match(/\d+ vaga/)) ||
+          'vacancies': vacancies != null ?
+              parseInt(vacancies[0].replace(/\./g, '')) :
               '-',
           'region': region,
           'url': tenderData.firstElementChild.href,
