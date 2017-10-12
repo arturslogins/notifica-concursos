@@ -10,7 +10,7 @@
 
   "background": {
     "scripts": [
-      "vendors/jquery-3-2-1/js/jquery-3-2-1.js",
+      "vendors/jquery-3.2.1/jquery-3.2.1.js",
       "js/checker.js"
     ],
     "persistent": false
