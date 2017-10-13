@@ -1,6 +1,6 @@
 {
   "name": "Notifica Concursos",
-  "description": "Extensão do Chrome que busca e notifica concursos públicos brasileiros.",
+  "description": "Extensão do Chrome para buscar concursos públicos abertos e notificar quando eles abrirem.",
   "version": "1.2.3",
   "author": "Romildo Oliveira Souza Júnior",
 
