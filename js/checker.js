@@ -143,6 +143,9 @@ chrome.alarms.onAlarm.addListener(function(alarm) {
                 function() {});
           });
         });
+      } else {
+        chrome.storage.local.set(
+            {'syncedTenders': syncedTenders}, function() {});
       }
     });
   }
