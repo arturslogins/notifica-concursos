@@ -16,9 +16,13 @@ chrome.storage.local.get('syncedTenders', function(synced) {
       {
         'data': null,
         'title': 'Instituição',
-        render: function(data) {
-          return '<a href="' + data['url'] + '">' + data['institution'] +
-              '</a>';
+        render: function(data, type, row) {
+          if (type === 'filter') {
+            return data['url'] + ' ' + data['institution'];
+          } else {
+            return '<a href="' + data['url'] + '">' + data['institution'] +
+                '</a>';
+          }
         }
       },
       {'data': 'vacancies', 'title': 'Vagas'},
@@ -85,7 +89,7 @@ chrome.storage.local.get('syncedTenders', function(synced) {
     $('#hidePrefecturesInput').on('change', function() {
       if (this.checked == true) {
         hidePrefecturesFilter = function(settings, data, dataIndex) {
-          return data[0].startsWith('Prefeitura') == false;
+          return data[0].split(' ')[1].startsWith('Prefeitura') == false;
         };
 
         $.fn.dataTable.ext.search.push(hidePrefecturesFilter);
@@ -153,22 +157,13 @@ chrome.storage.local.get('syncedTenders', function(synced) {
   function parseCareer(xhrResponse) {
     let tendersData = $('.lista_concursos', xhrResponse).children();
     let tenders = [];
-    let region;
 
     tendersData.each(function(index, tenderData) {
       if (tenderData.className != 'ea' && tenderData.className != 'ua') {
         if (tenderData.firstElementChild != null &&
             tenderData.firstElementChild.className == 'ca') {
-          tenderData = tenderData.firstElementChild;
-
-          tenders.push({
-            'institution': tenderData.firstElementChild.text,
-            'vacancies':
-                parseInt(tenderData.getElementsByClassName('cd')[0]
-                             .firstChild.textContent.match(/\d+ vaga/)) ||
-                -1,
-            'region': tenderData.getElementsByClassName('cc')[0].textContent,
-          });
+          tenders.push(
+              {'url': tenderData.firstElementChild.firstElementChild.href});
         }
       }
     });
@@ -184,9 +179,7 @@ chrome.storage.local.get('syncedTenders', function(synced) {
 
     careerFilter = function(settings, data, dataIndex) {
       for (var i = 0; i < tenders.length; i++) {
-        if (tenders[i]['institution'] == data[0] &&
-            tenders[i]['vacancies'] == data[1] &&
-            tenders[i]['region'] == data[2]) {
+        if (tenders[i]['url'] == data[0].split(' ')[0]) {
           return true;
         }
       }
@@ -209,6 +202,6 @@ chrome.storage.local.get('syncedTenders', function(synced) {
         {'path': 'images/icons/inactive-notification.png'},
         function callback() {});
     chrome.browserAction.setTitle(
-        {'title': 'Notifica Concursos: Não há novos concursos.'});
+        {'title': 'Notifica Concursos: não há novos concursos.'});
   });
 });

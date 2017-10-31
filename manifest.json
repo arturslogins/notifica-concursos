@@ -1,7 +1,7 @@
 {
   "name": "Notifica Concursos",
-  "description": "Extensão do Chrome para buscar concursos públicos abertos e notificar quando eles abrirem.",
-  "version": "1.2.4",
+  "description": "Essa extensão notifica quando um novo concurso abre e também permite que você busque e filtre concursos abertos.",
+  "version": "1.2.5",
   "author": "Romildo Oliveira Souza Júnior",
 
   "icons": {
